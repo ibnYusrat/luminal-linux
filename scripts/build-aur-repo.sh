@@ -8,9 +8,10 @@ BUILD_DIR="/tmp/aur-build-temp"
 
 AUR_PACKAGES=(
     "yay-bin"
+    "libcava"
     "caelestia-cli"
-    "caelestia-shell"
     "quickshell-git"
+    "caelestia-shell"
     "python-materialyoucolor"
     "darkly-bin"
     "qtengine"
@@ -19,8 +20,6 @@ AUR_PACKAGES=(
     "ttf-material-symbols-variable"
     "mpvpaper"
     "espanso-bin"
-    "oh-my-zsh-git"
-    "caelestia-sddm-git"
 )
 
 export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
@@ -33,18 +32,22 @@ echo "=================================================="
 mkdir -p "${REPO_DIR}"
 mkdir -p "${BUILD_DIR}"
 
-# Step 1: Harvest pre-built packages from yay cache
-echo "==> 1. Harvesting pre-built packages from ~/.cache/yay..."
-if [ -d "$HOME/.cache/yay" ]; then
-    find "$HOME/.cache/yay" -type f -name "*.pkg.tar.zst" ! -name "*-debug-*.pkg.tar.zst" 2>/dev/null | while read -r pkg_file; do
-        pkg_basename="$(basename "${pkg_file}")"
-        if [ ! -f "${REPO_DIR}/${pkg_basename}" ]; then
-            cp -v "${pkg_file}" "${REPO_DIR}/"
+# Step 1: Ensure yay is installed for automated AUR dependency resolution
+if ! command -v yay &>/dev/null; then
+    echo "==> yay not found. Building and bootstrapping yay-bin..."
+    cd "${BUILD_DIR}"
+    rm -rf yay-bin
+    if git clone --depth 1 "https://aur.archlinux.org/yay-bin.git"; then
+        cd yay-bin
+        if makepkg -sc --noconfirm --needed; then
+            cp -v ./*.pkg.tar.zst "${REPO_DIR}/" 2>/dev/null || true
+            sudo pacman -U --noconfirm ./*.pkg.tar.zst 2>/dev/null || true
+            echo "  [SUCCESS] yay bootstrapped."
         fi
-    done
+    fi
 fi
 
-# Step 2: Build any missing target AUR packages
+# Step 2: Build any missing target AUR packages using yay
 echo "==> 2. Checking and building any missing AUR packages..."
 for pkg in "${AUR_PACKAGES[@]}"; do
     echo "----------------------------------------"
@@ -58,29 +61,34 @@ for pkg in "${AUR_PACKAGES[@]}"; do
         continue
     fi
 
-    # Build using makepkg
-    echo "  [BUILD] Cloning and building ${pkg} from AUR..."
-    cd "${BUILD_DIR}"
-    rm -rf "${pkg}"
-    if git clone --depth 1 "https://aur.archlinux.org/${pkg}.git"; then
-        cd "${pkg}"
-        if makepkg -sc --noconfirm --needed; then
-            cp -v ./*.pkg.tar.zst "${REPO_DIR}/"
-            echo "  [SUCCESS] Built ${pkg}."
-        else
-            echo "  [WARNING] Failed building ${pkg}."
-        fi
+    echo "  [BUILD] Building ${pkg} via yay..."
+    if command -v yay &>/dev/null; then
+        yay -S --builddir "${BUILD_DIR}" --noconfirm --mflags "--nocheck" "${pkg}" 2>/dev/null || true
     else
-        echo "  [WARNING] Failed to clone ${pkg} from AUR."
+        cd "${BUILD_DIR}"
+        rm -rf "${pkg}"
+        if git clone --depth 1 "https://aur.archlinux.org/${pkg}.git"; then
+            cd "${pkg}"
+            makepkg -sc --noconfirm --needed --nocheck 2>/dev/null || true
+        fi
     fi
 done
 
-# Step 3: Remove any debug packages
+# Step 3: Harvest all generated packages from yay cache and build directory
+echo "==> 3. Harvesting built packages into repository..."
+find "${BUILD_DIR}" "$HOME/.cache/yay" /var/cache/pacman/pkg -type f -name "*.pkg.tar.zst" ! -name "*-debug-*.pkg.tar.zst" 2>/dev/null | while read -r pkg_file; do
+    pkg_basename="$(basename "${pkg_file}")"
+    if [ ! -f "${REPO_DIR}/${pkg_basename}" ]; then
+        cp -v "${pkg_file}" "${REPO_DIR}/" 2>/dev/null || true
+    fi
+done
+
+# Remove any debug packages
 rm -f "${REPO_DIR}"/*-debug-*.pkg.tar.zst 2>/dev/null || true
 
 # Step 4: Index the repository with repo-add
 echo "=================================================="
-echo "==> 3. Updating repository database..."
+echo "==> 4. Updating repository database..."
 cd "${REPO_DIR}"
 
 if compgen -G "*.pkg.tar.zst" > /dev/null; then

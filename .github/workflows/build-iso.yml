@@ -41,8 +41,8 @@ jobs:
             -v ${{ github.workspace }}:/workspace \
             -w /workspace \
             archlinux:base-devel bash -c "
-              echo '==> 1. Updating Pacman and installing Archiso...'
-              pacman -Syu --noconfirm archiso git sudo pacman-contrib zstd jq libxml2 lua
+              echo '==> 1. Updating Pacman and installing Archiso & build tools...'
+              pacman -Syu --noconfirm base-devel archiso git sudo pacman-contrib zstd jq libxml2 lua file libarchive
 
               echo '==> 2. Setting up unprivileged build user...'
               useradd -m builder
