@@ -1,6 +1,13 @@
 name: Build & Release Custom Arch Linux ISO
 
 on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
   schedule:
     - cron: '0 0 * * 0' # Automatically run every Sunday at 00:00 UTC
   workflow_dispatch:   # Allows manual trigger button in GitHub Actions tab
