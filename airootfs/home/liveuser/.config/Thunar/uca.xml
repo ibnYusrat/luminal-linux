@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1710575157271461-1</unique-id>
+	<command>kitty --directory %f</command>
+	<description>Open the current directory in kitty</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>preferences-desktop-wallpaper</icon>
+	<name>Set as Wallpaper</name>
+	<submenu></submenu>
+	<unique-id>1723046000000000-1</unique-id>
+	<command>~/.config/hypr/set_wallpaper.sh %f</command>
+	<description>Set as desktop wallpaper</description>
+	<range></range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>video-x-generic</icon>
+	<name>Set as Video Wallpaper</name>
+	<submenu></submenu>
+	<unique-id>1723046000000000-2</unique-id>
+	<command>~/.config/hypr/set_wallpaper.sh %f</command>
+	<description>Set selected video as live wallpaper (Smart Mode)</description>
+	<range></range>
+	<patterns>*</patterns>
+	<video-files/>
+</action>
+</actions>

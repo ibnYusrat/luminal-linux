@@ -1,0 +1,10 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/lib/thunarx-3/thunar-wallpaper-plugin.so
+
+[Action]
+Description = Disabling broken default XFCE Thunar wallpaper plugin...
+When = PostTransaction
+Exec = /usr/bin/rm -f /usr/lib/thunarx-3/thunar-wallpaper-plugin.so

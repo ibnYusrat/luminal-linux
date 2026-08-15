@@ -1,0 +1,24 @@
+# mkinitcpio preset file for the 'linux' package (Triple-Preset UKI Architecture)
+
+ALL_kver='/boot/vmlinuz-linux'
+ALL_config='/etc/mkinitcpio.conf'
+
+PRESETS=('splash' 'tty' 'verbose')
+
+# --- Preset 1: Default Graphical Plymouth Splash UKI ---
+splash_config='/etc/mkinitcpio-plymouth.conf'
+splash_cmdline='/etc/kernel/cmdline-splash'
+splash_osrelease='/etc/kernel/os-release-splash'
+splash_uki='/boot/EFI/Linux/arch-linux-splash.efi'
+
+# --- Preset 2: Emergency Text Console TTY UKI ---
+tty_config='/etc/mkinitcpio.conf'
+tty_cmdline='/etc/kernel/cmdline-tty'
+tty_osrelease='/etc/kernel/os-release-tty'
+tty_uki='/boot/EFI/Linux/arch-linux-tty.efi'
+
+# --- Preset 3: Verbose Diagnostic Log UKI ---
+verbose_config='/etc/mkinitcpio.conf'
+verbose_cmdline='/etc/kernel/cmdline'
+verbose_osrelease='/etc/kernel/os-release-verbose'
+verbose_uki='/boot/EFI/Linux/arch-linux-verbose.efi'

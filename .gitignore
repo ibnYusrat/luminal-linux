@@ -1,0 +1,22 @@
+# Build outputs and ISO images
+out/
+*.iso
+*.img
+*.qcow2
+
+# Local AUR Package Cache (Binary packages)
+repo/*.pkg.tar.zst
+repo/*.pkg.tar.xz
+repo/custom-distro-repo.db*
+repo/custom-distro-repo.files*
+
+# Archiso temporary work directories & logs
+work/
+/tmp/archiso-work/
+*.log
+
+# Editor / System files
+.cache/
+*~
+.DS_Store
+DISTRO_SPEC.md

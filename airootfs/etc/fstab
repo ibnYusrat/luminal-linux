@@ -1,0 +1,2 @@
+# /etc/fstab: static file system information
+hostshare /mnt/shared 9p trans=virtio,version=9p2000.L,rw,_netdev,nofail 0 0

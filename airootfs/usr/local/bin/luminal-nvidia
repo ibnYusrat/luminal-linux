@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$(id -u)" -ne 0 ]; then
+    exec sudo "$0" "$@"
+fi
+
+echo "=================================================="
+echo "   ⚡ LUMINAL LINUX NVIDIA SETUP & OPTIMIZER"
+echo "=================================================="
+echo ""
+
+# 1. Hardware Detection
+echo "==> Scanning for NVIDIA Graphics Hardware..."
+NVIDIA_GPU=$(lspci -nn | grep -iE 'vga|3d' | grep -i 'nvidia' || true)
+
+if [ -z "${NVIDIA_GPU}" ]; then
+    echo "ℹ️  No NVIDIA GPU detected on this system."
+    echo "Your system will use native open-source drivers (AMD / Intel / Mesa)."
+    exit 0
+fi
+
+echo "✅ Detected NVIDIA GPU: ${NVIDIA_GPU}"
+echo ""
+
+# 2. Package Installation
+echo "==> Installing NVIDIA DKMS drivers and Wayland acceleration packages..."
+pacman -S --needed --noconfirm \
+    nvidia-dkms \
+    nvidia-utils \
+    egl-wayland \
+    libva-nvidia-driver \
+    nvidia-settings 2>/dev/null || true
+
+# 3. Kernel Modesetting (Early KMS & DRM)
+echo "==> Configuring NVIDIA Kernel Mode Setting (nvidia-drm.modeset=1, fbdev=1)..."
+mkdir -p /etc/modprobe.d
+cat <<EOF > /etc/modprobe.d/nvidia.conf
+options nvidia_drm modeset=1 fbdev=1
+options nvidia NVreg_PreserveVideoMemoryAllocations=1
+EOF
+
+# 4. Pacman Hook for Safe Kernel Updates
+echo "==> Setting up automatic mkinitcpio Pacman hook for kernel updates..."
+mkdir -p /etc/pacman.d/hooks
+cat <<EOF > /etc/pacman.d/hooks/nvidia.hook
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia-dkms
+Target=linux
+
+[Action]
+Description=Updating NVIDIA initramfs images...
+When=PostTransaction
+Depends=mkinitcpio
+Exec=/usr/bin/mkinitcpio -P
+EOF
+
+# 5. Enable NVIDIA Power Management Services (Prevents wake/sleep crashes)
+echo "==> Enabling NVIDIA power management systemd services..."
+systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service 2>/dev/null || true
+
+# 6. Rebuild Initramfs
+echo "==> Rebuilding Linux initramfs with NVIDIA modules..."
+mkinitcpio -P
+
+echo ""
+echo "=================================================="
+echo "✅ NVIDIA Driver Configuration Complete!"
+echo "=================================================="
+echo "• Early KMS:      Enabled (fbdev=1, modeset=1)"
+echo "• Wayland EGL:    Enabled (egl-wayland)"
+echo "• Video Accel:    Enabled (libva-nvidia-driver)"
+echo "• Auto-Updates:   Protected via DKMS & Pacman Hook"
+echo "=================================================="

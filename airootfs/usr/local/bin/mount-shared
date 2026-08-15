@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure root privileges
+if [ "$(id -u)" -ne 0 ]; then
+    exec sudo "$0" "$@"
+fi
+
+# Load 9p virtio kernel modules
+modprobe 9pnet_virtio 2>/dev/null || true
+modprobe 9pnet 2>/dev/null || true
+modprobe 9p 2>/dev/null || true
+
+mkdir -p /mnt/shared
+chmod 777 /mnt/shared
+
+if ! mountpoint -q /mnt/shared; then
+    mount -t 9p -o trans=virtio,version=9p2000.L,rw hostshare /mnt/shared 2>/dev/null || true
+fi
+
+if mountpoint -q /mnt/shared; then
+    chmod 777 /mnt/shared
+    # Symlink to liveuser / current user desktop for instant GUI access in Thunar
+    for udir in /home/*; do
+        if [ -d "${udir}" ] && [ "$(basename "${udir}")" != "lost+found" ]; then
+            ln -sf /mnt/shared "${udir}/Shared" 2>/dev/null || true
+        fi
+    done
+    echo "✅ Host shared folder mounted at /mnt/shared (and ~/Shared)"
+fi

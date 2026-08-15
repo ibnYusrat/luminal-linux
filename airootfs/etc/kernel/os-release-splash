@@ -1,0 +1,9 @@
+NAME="Custom Arch Linux"
+PRETTY_NAME="Custom Arch Linux"
+ID=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://archlinux.org/"
+IMAGE_ID="archlinux"
+IMAGE_VERSION="rolling"
+SORT_KEY="arch-1-splash"

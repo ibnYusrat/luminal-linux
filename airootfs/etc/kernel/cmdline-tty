@@ -1,0 +1,1 @@
+root=LABEL=LUMINAL_ROOT rw systemd.unit=multi-user.target loglevel=3

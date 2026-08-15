@@ -1,0 +1,8 @@
+{
+  "wallpaper": {
+    "postHook": "sudo /usr/share/sddm/themes/caelestia/scripts/sync.sh --posthook"
+  },
+  "theme": {
+    "postHook": "sudo /usr/share/sddm/themes/caelestia/scripts/sync.sh --posthook"
+  }
+}

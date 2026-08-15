@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Welcome to Custom Arch Linux
+Comment=Welcome and Installer Center
+Exec=kitty --title "Welcome to Custom Arch Linux" --class "welcome-center" /usr/local/bin/welcome-app
+Terminal=false
+Type=Application
+Categories=System;
+StartupNotify=true

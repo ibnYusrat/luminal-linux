@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount Host Shared Folder (9p virtfs)
+After=local-fs.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mount-shared
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

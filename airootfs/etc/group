@@ -1,0 +1,9 @@
+root:x:0:root
+wheel:x:998:liveuser
+audio:x:995:liveuser
+video:x:986:liveuser
+storage:x:988:liveuser
+optical:x:990:liveuser
+input:x:974:liveuser
+seat:x:969:liveuser
+liveuser:x:1000:

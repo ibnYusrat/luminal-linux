@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure installer is executed with root privileges
+if [ "$(id -u)" -ne 0 ]; then
+    exec sudo /usr/local/bin/offline-install "$@"
+else
+    exec /usr/local/bin/offline-install "$@"
+fi

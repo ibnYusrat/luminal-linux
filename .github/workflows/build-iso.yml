@@ -1,0 +1,90 @@
+name: Build & Release Custom Arch Linux ISO
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Automatically run every Sunday at 00:00 UTC
+  workflow_dispatch:   # Allows manual trigger button in GitHub Actions tab
+    inputs:
+      publish_release:
+        description: 'Publish as a GitHub Release'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    name: Build Custom Arch ISO
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🧹 Free Disk Space on Runner
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost
+          sudo docker image prune --all --force
+          df -h
+
+      - name: 🔨 Build ISO inside Arch Linux Container
+        run: |
+          docker run --rm --privileged \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            archlinux:base-devel bash -c "
+              echo '==> 1. Updating Pacman and installing Archiso...'
+              pacman -Syu --noconfirm archiso git sudo pacman-contrib zstd jq libxml2 lua
+
+              echo '==> 2. Setting up unprivileged build user...'
+              useradd -m builder
+              echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+              chown -R builder:builder /workspace
+
+              echo '==> 3. Building / Updating AUR Package Repository...'
+              su builder -c 'bash ./scripts/build-aur-repo.sh'
+
+              echo '==> 4. Building Distro ISO...'
+              bash ./build-iso.sh
+            "
+
+      - name: 🔍 Inspect & Calculate Checksums
+        id: meta
+        run: |
+          ISO_FILE=$(ls out/*.iso | head -n 1)
+          ISO_NAME=$(basename "${ISO_FILE}")
+          SHA256=$(sha256sum "${ISO_FILE}" | awk '{print $1}')
+          TAG="v$(date +'%Y.%m.%d')"
+          
+          echo "iso_path=${ISO_FILE}" >> $GITHUB_OUTPUT
+          echo "iso_name=${ISO_NAME}" >> $GITHUB_OUTPUT
+          echo "sha256=${SHA256}" >> $GITHUB_OUTPUT
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
+          echo "SHA256: ${SHA256}" > "${ISO_FILE}.sha256"
+
+      - name: 🚀 Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.publish_release == 'true' }}
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: "Custom Arch Linux Rolling Release (${{ steps.meta.outputs.tag }})"
+          draft: false
+          prerelease: false
+          files: |
+            ${{ steps.meta.outputs.iso_path }}
+            ${{ steps.meta.outputs.iso_path }}.sha256
+          body: |
+            ## ❄️ Custom Arch Linux Rolling Release (${{ steps.meta.outputs.tag }})
+
+            Automated weekly build containing the latest upstream Arch Linux packages, Linux kernel, Hyprland, and Caelestia desktop environment.
+
+            ### 📦 Download & Integrity
+            * **ISO Image:** `${{ steps.meta.outputs.iso_name }}`
+            * **SHA256 Checksum:** `${{ steps.meta.outputs.sha256 }}`
+
+            ### 🚀 Flashing to USB
+            ```bash
+            sudo dd bs=4M if=${{ steps.meta.outputs.iso_name }} of=/dev/sdX status=progress oflag=sync
+            ```

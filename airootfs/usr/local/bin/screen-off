@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Script to turn off monitor after ~1.5s delay. Wakes up on keyboard keypress or mouse move.
+
+# Short delay so releasing Enter key doesn't trigger immediate wakeup
+sleep 1.5
+
+# Auto-detect Hyprland signature if Hyprland is running but env var is missing
+if [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ] && [ -d "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hypr" ]; then
+    export HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hypr" 2>/dev/null | head -n 1)
+fi
+
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ] && hyprctl ping &>/dev/null; then
+    # Hyprland is active -> use hyprctl
+    hyprctl dispatch dpms off
+else
+    # In TTY or Hyprland stopped -> use kernel TTY setterm
+    setterm --term linux --blank force > /dev/tty1 2>/dev/null || setterm --blank force
+fi

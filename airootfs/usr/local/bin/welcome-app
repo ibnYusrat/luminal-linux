@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+while true; do
+    clear
+    echo "=================================================="
+    echo "   ❄️  WELCOME TO CUSTOM ARCH LINUX LIVE DEMO"
+    echo "=================================================="
+    echo ""
+    echo "  [1] 🚀 Install Custom Arch Linux to Disk"
+    echo "  [2] 📶 Connect to Wi-Fi / Manage Network"
+    echo "  [3] ⌨️  View Desktop Keybindings Cheatsheet"
+    echo "  [4] 🎨 Explore Live Desktop (Exit Menu)"
+    echo ""
+    echo "=================================================="
+    read -r -p "Enter selection [1-4]: " choice
+
+    case "${choice}" in
+        1)
+            sudo /usr/local/bin/installer
+            break
+            ;;
+        2)
+            nmtui
+            ;;
+        3)
+            clear
+            echo "=================================================="
+            echo "   ⌨️  HYPRLAND DESKTOP KEYBINDINGS"
+            echo "=================================================="
+            echo ""
+            echo "  • SUPER + T / Return     : Open Kitty Terminal"
+            echo "  • ALT + Space / SUPER_L  : Open Application Launcher"
+            echo "  • CTRL + ALT + SHIFT + 4 : Region Screenshot (Clipboard + Save)"
+            echo "  • SUPER + Q              : Close Active Window"
+            echo "  • SUPER + 1 .. 9         : Switch Workspaces"
+            echo "  • SUPER + SHIFT + 1 .. 9 : Move Window to Workspace"
+            echo "  • Right-Click in Thunar  : Set Static or Video Wallpaper"
+            echo ""
+            echo "=================================================="
+            read -r -p "Press Enter to return to main menu..." _
+            ;;
+        4)
+            echo "Enjoy test-driving Custom Arch Linux!"
+            sleep 0.5
+            break
+            ;;
+        *)
+            echo "Invalid selection."
+            sleep 1
+            ;;
+    esac
+done

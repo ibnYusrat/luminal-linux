@@ -1,0 +1,340 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 1. Ensure Root Privileges (Auto-escalate seamlessly)
+if [ "$(id -u)" -ne 0 ]; then
+    exec sudo "$0" "$@"
+fi
+
+LOG_FILE="/tmp/offline-install.log"
+mkdir -p /tmp/installer-config
+
+export_logs() {
+    if mountpoint -q /mnt/shared 2>/dev/null; then
+        cp "${LOG_FILE}" /mnt/shared/offline-install.log 2>/dev/null || true
+        chmod 666 /mnt/shared/offline-install.log 2>/dev/null || true
+    fi
+}
+
+error_handler() {
+    local code=$?
+    if [ $code -ne 0 ]; then
+        echo ""
+        echo "=================================================="
+        echo "⚠️  INSTALLATION FAILED (Exit Code: $code)"
+        echo "=================================================="
+        export_logs
+        echo "Log saved at: ${LOG_FILE}"
+        echo ""
+        echo "Last 20 lines of log:"
+        tail -n 20 "${LOG_FILE}" 2>/dev/null || true
+        echo ""
+        read -r -p "Press Enter to return to live environment..." _
+    fi
+}
+trap error_handler EXIT
+
+# Try to mount host shared folder for debugging
+/usr/local/bin/mount-shared 2>/dev/null || true
+
+# Direct output to console and log
+exec > >(tee -a "${LOG_FILE}") 2>&1
+
+clear
+echo "=================================================="
+echo "   ❄️  LUMINAL LINUX OFFLINE INSTALLER"
+echo "=================================================="
+echo "  • 100% Offline (Zero internet required)"
+echo "  • Clones pre-configured Hyprland desktop in ~30s"
+echo "=================================================="
+echo ""
+
+# 2. Timezone Selection
+/usr/local/bin/select-timezone || true
+TZ_FILE="/tmp/installer-config/timezone"
+if [ -f "${TZ_FILE}" ]; then
+    CHOSEN_TZ=$(cat "${TZ_FILE}")
+else
+    CHOSEN_TZ="UTC"
+fi
+
+# 3. Disk Selection
+echo ""
+echo "==> Scanning available storage disks:"
+echo "--------------------------------------------------"
+mapfile -t DISK_LINES < <(lsblk -dpno NAME,SIZE,TYPE,MODEL | grep "disk" || true)
+
+if [ ${#DISK_LINES[@]} -eq 0 ]; then
+    echo "❌ No suitable target disk detected!"
+    exit 1
+fi
+
+DISKS=()
+for i in "${!DISK_LINES[@]}"; do
+    D_NAME=$(echo "${DISK_LINES[$i]}" | awk '{print $1}')
+    DISKS+=("${D_NAME}")
+    echo "  [$((i+1))] ${DISK_LINES[$i]}"
+done
+echo "--------------------------------------------------"
+
+while true; do
+    read -r -p "Select target disk [1-${#DISKS[@]}]: " disk_idx
+    if [[ "${disk_idx}" =~ ^[0-9]+$ ]] && [ "${disk_idx}" -ge 1 ] && [ "${disk_idx}" -le ${#DISKS[@]} ]; then
+        TARGET_DISK="${DISKS[$((disk_idx-1))]}"
+        break
+    else
+        echo "Invalid selection. Please choose a number between 1 and ${#DISKS[@]}."
+    fi
+done
+
+echo ""
+echo "⚠️  WARNING: ALL DATA ON ${TARGET_DISK} WILL BE COMPLETELY ERASED!"
+read -r -p "Are you sure you want to proceed? Type 'yes' to continue: " confirm
+if [ "${confirm}" != "yes" ]; then
+    echo "Installation cancelled by user."
+    exit 0
+fi
+
+# 4. User Account Setup
+echo ""
+echo "==> User Account Setup:"
+read -r -p "Enter your username [e.g. ibnyusrat]: " USERNAME
+USERNAME=$(echo "${USERNAME}" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+USERNAME="${USERNAME:-archuser}"
+
+while true; do
+    read -r -s -p "Enter password for ${USERNAME}: " PASSWORD
+    echo ""
+    read -r -s -p "Confirm password for ${USERNAME}: " PASSWORD_CONFIRM
+    echo ""
+    if [ "${PASSWORD}" = "${PASSWORD_CONFIRM}" ] && [ -n "${PASSWORD}" ]; then
+        break
+    else
+        echo "Passwords do not match or are empty. Please try again."
+    fi
+done
+
+read -r -p "Enter hostname for this machine [default: luminal-pc]: " HOSTNAME
+HOSTNAME="${HOSTNAME:-luminal-pc}"
+
+# 5. Disk Partitioning (GPT: 512MB EFI + Linux Root)
+echo ""
+echo "==> Preparing ${TARGET_DISK}..."
+swapoff -a 2>/dev/null || true
+umount -R /mnt 2>/dev/null || true
+
+wipefs -af "${TARGET_DISK}"
+sgdisk -Z "${TARGET_DISK}"
+sgdisk -n 1:0:+512M -t 1:ef00 -c 1:"EFI System Partition" "${TARGET_DISK}"
+sgdisk -n 2:0:0     -t 2:8300 -c 2:"Linux Root" "${TARGET_DISK}"
+partprobe "${TARGET_DISK}"
+sleep 1
+
+# Detect partition names (handles /dev/nvme0n1p1 vs /dev/vda1 vs /dev/sda1)
+if [[ "${TARGET_DISK}" =~ [0-9]$ ]]; then
+    PART_EFI="${TARGET_DISK}p1"
+    PART_ROOT="${TARGET_DISK}p2"
+else
+    PART_EFI="${TARGET_DISK}1"
+    PART_ROOT="${TARGET_DISK}2"
+fi
+
+echo "==> Formatting ${PART_EFI} as FAT32..."
+mkfs.vfat -F32 "${PART_EFI}"
+
+echo "==> Formatting ${PART_ROOT} as EXT4..."
+mkfs.ext4 -F -L "LUMINAL_ROOT" "${PART_ROOT}"
+
+echo "==> Mounting target filesystem to /mnt..."
+mkdir -p /mnt
+mount "${PART_ROOT}" /mnt
+mkdir -p /mnt/boot
+mount "${PART_EFI}" /mnt/boot
+
+# 6. Fast Rootfs Transfer
+echo "==> Cloning desktop filesystem to target disk (~20-30s)..."
+rsync -aAXH --info=progress2 \
+    --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/home/liveuser","/etc/sddm.conf.d/autologin.conf","/etc/sudoers.d/liveuser"} \
+    / /mnt/
+
+# 7. System Configuration
+echo "==> Configuring target system settings..."
+mkdir -p /mnt/etc
+
+# Generate fstab
+genfstab -U /mnt > /mnt/etc/fstab
+
+# Set hostname
+echo "${HOSTNAME}" > /mnt/etc/hostname
+cat <<EOF > /mnt/etc/hosts
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   ${HOSTNAME}.localdomain ${HOSTNAME}
+EOF
+
+# Set Timezone
+arch-chroot /mnt ln -sf "/usr/share/zoneinfo/${CHOSEN_TZ}" /etc/localtime
+arch-chroot /mnt hwclock --systohc 2>/dev/null || true
+
+# Locale
+echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
+echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+arch-chroot /mnt locale-gen
+
+# Purge liveuser account and session from target system
+arch-chroot /mnt userdel -r -f liveuser 2>/dev/null || true
+sed -i '/^liveuser:/d' /mnt/etc/passwd /mnt/etc/shadow /mnt/etc/group /mnt/etc/gshadow 2>/dev/null || true
+rm -f /mnt/etc/sddm.conf.d/autologin.conf 2>/dev/null || true
+rm -f /mnt/etc/sudoers.d/liveuser 2>/dev/null || true
+rm -rf /mnt/home/liveuser 2>/dev/null || true
+
+# Create Target User Account
+echo "==> Creating user '${USERNAME}'..."
+arch-chroot /mnt useradd -m -u 1000 -G wheel,video,audio,input,storage,optical,seat -s /bin/zsh "${USERNAME}" 2>/dev/null || \
+arch-chroot /mnt useradd -m -G wheel,video,audio,input,storage,optical,seat -s /bin/zsh "${USERNAME}"
+
+echo "${USERNAME}:${PASSWORD}" | arch-chroot /mnt chpasswd
+echo "root:${PASSWORD}" | arch-chroot /mnt chpasswd
+
+# Copy user skeleton dotfiles
+cp -a /mnt/etc/skel/. "/mnt/home/${USERNAME}/"
+arch-chroot /mnt chown -R "${USERNAME}:${USERNAME}" "/home/${USERNAME}"
+chmod +x "/mnt/home/${USERNAME}/.config/hypr/"*.sh 2>/dev/null || true
+chmod +x "/mnt/home/${USERNAME}/.local/bin/"* 2>/dev/null || true
+
+# Sudo configuration (Passwordless sudo for wheel & target user)
+mkdir -p /mnt/etc/sudoers.d
+echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" > /mnt/etc/sudoers.d/10-wheel
+echo "${USERNAME} ALL=(ALL:ALL) NOPASSWD: ALL" > "/mnt/etc/sudoers.d/99-${USERNAME}"
+chmod 440 /mnt/etc/sudoers.d/*
+chmod 750 /mnt/etc/sudoers.d
+
+# Clean live session autostarts
+rm -rf /mnt/etc/skel/.config/autostart/welcome.desktop 2>/dev/null || true
+rm -rf "/mnt/home/${USERNAME}/.config/autostart/welcome.desktop" 2>/dev/null || true
+
+# 8. Bootloader & Kernel Configuration
+echo "==> Preparing EFI boot directory and kernel binary..."
+mkdir -p /mnt/boot/EFI/Linux
+mkdir -p /mnt/boot/loader/entries
+
+# Copy kernel image to /mnt/boot/vmlinuz-linux
+if [ ! -f /mnt/boot/vmlinuz-linux ]; then
+    echo "==> Installing Linux kernel binary to target /boot..."
+    KERNEL_SRC=$(find /mnt/usr/lib/modules -name "vmlinuz" 2>/dev/null | head -n 1)
+    if [ -n "${KERNEL_SRC}" ] && [ -f "${KERNEL_SRC}" ]; then
+        cp "${KERNEL_SRC}" /mnt/boot/vmlinuz-linux
+    elif [ -f /run/archiso/bootmnt/arch/boot/x86_64/vmlinuz-linux ]; then
+        cp /run/archiso/bootmnt/arch/boot/x86_64/vmlinuz-linux /mnt/boot/vmlinuz-linux
+    fi
+fi
+
+# Copy CPU microcode packages if present
+for ucode in /mnt/boot/*-ucode.img /run/archiso/bootmnt/arch/boot/*-ucode.img; do
+    if [ -f "${ucode}" ]; then
+        cp "${ucode}" /mnt/boot/ 2>/dev/null || true
+    fi
+done
+
+echo "==> Installing systemd-boot bootloader..."
+arch-chroot /mnt bootctl --path=/boot install
+
+# Setup UKI preset on target if available
+if [ -d /mnt/usr/share/custom-distro/kernel-presets ]; then
+    mkdir -p /mnt/etc/mkinitcpio.d
+    cp /mnt/usr/share/custom-distro/kernel-presets/linux.preset /mnt/etc/mkinitcpio.d/linux.preset 2>/dev/null || true
+    cp /mnt/usr/share/custom-distro/kernel-presets/mkinitcpio-plymouth.conf /mnt/etc/mkinitcpio-plymouth.conf 2>/dev/null || true
+fi
+
+# Detect NVIDIA Graphics Hardware
+if lspci -nn 2>/dev/null | grep -iE 'vga|3d' | grep -i -q 'nvidia'; then
+    echo "==> Detected NVIDIA Graphics Hardware! Applying Wayland & DRM configurations..."
+    mkdir -p /mnt/etc/modprobe.d
+    cat <<EOF > /mnt/etc/modprobe.d/nvidia.conf
+options nvidia_drm modeset=1 fbdev=1
+options nvidia NVreg_PreserveVideoMemoryAllocations=1
+EOF
+    mkdir -p /mnt/etc/pacman.d/hooks
+    cat <<EOF > /mnt/etc/pacman.d/hooks/nvidia.hook
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia-dkms
+Target=linux
+
+[Action]
+Description=Updating NVIDIA initramfs images...
+When=PostTransaction
+Depends=mkinitcpio
+Exec=/usr/bin/mkinitcpio -P
+EOF
+    arch-chroot /mnt systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service 2>/dev/null || true
+fi
+
+# Inject target root partition UUID into kernel cmdline for UKI images
+PART_ROOT_UUID=$(blkid -s UUID -o value "${PART_ROOT}" 2>/dev/null || true)
+mkdir -p /mnt/etc/kernel
+if [ -n "${PART_ROOT_UUID}" ]; then
+    echo "root=UUID=${PART_ROOT_UUID} rw quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0" > /mnt/etc/kernel/cmdline-splash
+    echo "root=UUID=${PART_ROOT_UUID} rw systemd.unit=multi-user.target loglevel=3" > /mnt/etc/kernel/cmdline-tty
+    echo "root=UUID=${PART_ROOT_UUID} rw loglevel=3 quiet" > /mnt/etc/kernel/cmdline
+else
+    echo "root=LABEL=LUMINAL_ROOT rw quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0" > /mnt/etc/kernel/cmdline-splash
+    echo "root=LABEL=LUMINAL_ROOT rw systemd.unit=multi-user.target loglevel=3" > /mnt/etc/kernel/cmdline-tty
+    echo "root=LABEL=LUMINAL_ROOT rw loglevel=3 quiet" > /mnt/etc/kernel/cmdline
+fi
+
+echo "==> Generating kernel initramfs & UKI images on target disk..."
+arch-chroot /mnt mkinitcpio -p linux
+
+# Configure systemd-boot loader.conf
+PART_ROOT_UUID=$(blkid -s UUID -o value "${PART_ROOT}" 2>/dev/null || true)
+cat <<EOF > /mnt/boot/loader/loader.conf
+default arch-linux-splash.efi
+timeout 3
+console-mode max
+editor no
+EOF
+
+# Fallback bootloader entry
+if [ -n "${PART_ROOT_UUID}" ]; then
+cat <<EOF > /mnt/boot/loader/entries/luminal.conf
+title   Luminal Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=UUID=${PART_ROOT_UUID} rw quiet splash loglevel=3
+EOF
+fi
+
+# Enable critical system services
+echo "==> Enabling desktop and hardware services..."
+arch-chroot /mnt systemctl enable sddm NetworkManager bluetooth 2>/dev/null || true
+
+# 9. Completion
+export_logs
+sync
+
+echo ""
+echo "=================================================="
+echo "🎉 INSTALLATION COMPLETED SUCCESSFULLY!"
+echo "=================================================="
+echo "• Distro:   Luminal Linux (Hyprland + Caelestia)"
+echo "• User:     ${USERNAME}"
+echo "• Disk:     ${TARGET_DISK}"
+echo ""
+echo "👉 Please remove your installation USB media / ISO."
+echo "=================================================="
+echo ""
+read -r -p "Would you like to reboot into your new system now? [Y/n]: " reboot_choice
+reboot_choice="${reboot_choice:-Y}"
+
+if [[ "${reboot_choice}" =~ ^[Yy]$ ]]; then
+    echo "Rebooting into your new system..."
+    sleep 1
+    systemctl reboot
+else
+    echo "Returning to live session."
+    read -r -p "Press Enter to exit..." _
+fi

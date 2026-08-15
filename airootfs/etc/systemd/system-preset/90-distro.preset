@@ -1,0 +1,7 @@
+enable sddm.service
+enable bluetooth.service
+enable NetworkManager.service
+enable power-profiles-daemon.service
+enable systemd-timesyncd.service
+enable mount-shared.service
+enable sshd.service

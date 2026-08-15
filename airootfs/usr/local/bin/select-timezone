@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+echo "=================================================="
+echo "🌍 System Timezone Configuration"
+echo "=================================================="
+
+DETECTED_TZ=$(curl -s --max-time 2 http://ip-api.com/line?fields=timezone 2>/dev/null || true)
+
+if [ -z "${DETECTED_TZ}" ] || [ ! -f "/usr/share/zoneinfo/${DETECTED_TZ}" ]; then
+    DETECTED_TZ="UTC"
+fi
+
+echo "==> Auto-detected Timezone: ${DETECTED_TZ}"
+read -r -p "Keep '${DETECTED_TZ}' as your timezone? [Y/n]: " choice
+choice="${choice:-Y}"
+
+if [[ "$choice" =~ ^[Yy]$ ]]; then
+    FINAL_TZ="${DETECTED_TZ}"
+else
+    echo "==> Type 2-3 letters to filter (e.g. 'kar', 'lon', 'tok'), then press Enter to select:"
+    FINAL_TZ=$(find /usr/share/zoneinfo/ -type f ! -name "*.tab" ! -name "posixrules" ! -name "localtime" 2>/dev/null | \
+        sed 's|/usr/share/zoneinfo/||' | sort | \
+        fzf --prompt="🔍 Select Timezone: " --height=40% --layout=reverse --border 2>/dev/null || echo "${DETECTED_TZ}")
+fi
+
+FINAL_TZ="${FINAL_TZ:-${DETECTED_TZ}}"
+
+timedatectl set-timezone "${FINAL_TZ}" 2>/dev/null || true
+echo "=================================================="
+echo "✅ Timezone set to: ${FINAL_TZ}"
+echo "=================================================="
+
+mkdir -p /tmp/installer-config
+echo "${FINAL_TZ}" > /tmp/installer-config/timezone

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Install Custom Arch Linux
+Comment=Launch the Custom Arch Linux Guided Installer
+Exec=kitty --hold --title "Installer" /usr/local/bin/installer
+Icon=system-software-install
+Terminal=false
+Type=Application
+Categories=System;
+StartupNotify=true

@@ -1,0 +1,7 @@
+enable pipewire.service
+enable pipewire.socket
+enable pipewire-pulse.service
+enable pipewire-pulse.socket
+enable wireplumber.service
+enable xdg-desktop-portal-hyprland.service
+enable xdg-desktop-portal.service
