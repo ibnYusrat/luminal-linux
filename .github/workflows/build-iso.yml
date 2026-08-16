@@ -60,7 +60,7 @@ jobs:
       - name: 🔍 Inspect & Calculate Checksums
         id: meta
         run: |
-          sudo chown -R $USER:$USER out/
+          sudo chown -R $USER:$USER .
           ISO_FILE=$(ls out/*.iso | head -n 1)
           ISO_NAME=$(basename "${ISO_FILE}")
           SHA256=$(sha256sum "${ISO_FILE}" | awk '{print $1}')
