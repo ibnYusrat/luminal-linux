@@ -13,13 +13,11 @@ AUR_PACKAGES=(
     "quickshell-git"
     "caelestia-shell"
     "python-materialyoucolor"
-    "darkly-bin"
     "qtengine"
     "papirus-folders"
     "ttf-rubik-vf"
     "ttf-material-symbols-variable"
     "mpvpaper"
-    "espanso-bin"
 )
 
 export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
@@ -76,7 +74,7 @@ done
 
 # Step 3: Harvest all generated packages from yay cache and build directory
 echo "==> 3. Harvesting built packages into repository..."
-find "${BUILD_DIR}" "$HOME/.cache/yay" /var/cache/pacman/pkg -type f -name "*.pkg.tar.zst" ! -name "*-debug-*.pkg.tar.zst" 2>/dev/null | while read -r pkg_file; do
+find "${BUILD_DIR}" "$HOME/.cache/yay" -type f -name "*.pkg.tar.zst" ! -name "*-debug-*.pkg.tar.zst" 2>/dev/null | while read -r pkg_file; do
     pkg_basename="$(basename "${pkg_file}")"
     if [ ! -f "${REPO_DIR}/${pkg_basename}" ]; then
         cp -v "${pkg_file}" "${REPO_DIR}/" 2>/dev/null || true

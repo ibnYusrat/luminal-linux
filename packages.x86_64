@@ -50,7 +50,6 @@ qt6-imageformats
 
 # --- Desktop Shell, Theming & UI Dependencies ---
 adw-gtk-theme
-frameworkintegration
 nwg-look
 papirus-icon-theme
 dconf
@@ -158,9 +157,7 @@ caelestia-cli
 caelestia-shell
 quickshell-git
 python-materialyoucolor
-darkly-bin
 qtengine
 papirus-folders
 ttf-rubik-vf
 mpvpaper
-espanso-bin
