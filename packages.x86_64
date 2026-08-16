@@ -142,9 +142,7 @@ fzf
 
 # --- Fonts & Typography ---
 ttf-jetbrains-mono-nerd
-ttf-cascadia-code-nerd
 noto-fonts
-noto-fonts-cjk
 noto-fonts-emoji
 ttf-liberation
 ttf-roboto
