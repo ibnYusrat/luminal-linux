@@ -9,7 +9,7 @@
 
 [![Base](https://img.shields.io/badge/Base-Arch_Linux-1793d1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://archlinux.org)
 [![Compositor](https://img.shields.io/badge/Compositor-Hyprland_Wayland-00c853?style=for-the-badge&logo=wayland&logoColor=white)](https://hyprland.org)
-[![Shell](https://img.shields.io/badge/Shell-Caelestia_QML-8e24aa?style=for-the-badge)](https://github.com/ItsABigIgloo/caelestia-shell)
+[![Shell](https://img.shields.io/badge/Shell-Caelestia_QML-8e24aa?style=for-the-badge)](https://github.com/caelestia-dots/shell)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-Automated_Weekly-blue?style=for-the-badge&logo=githubactions&logoColor=white)](.github/workflows/build-iso.yml)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
@@ -24,7 +24,7 @@
 Luminal Linux is an independent, out-of-the-box Arch Linux rolling release designed to replace cluttered desktop environments with a unified, high-performance Wayland ecosystem.
 
 * **Compositor:** [Hyprland](https://hyprland.org) configured with modular Lua scripts.
-* **Atmospheric UI:** [Caelestia Shell](https://github.com/ItsABigIgloo/caelestia-shell) (Quickshell QML) with dynamic Material You color extraction from wallpapers.
+* **Atmospheric UI:** [Caelestia Shell](https://github.com/caelestia-dots/shell) (Quickshell QML) with dynamic Material You color extraction from wallpapers.
 * **Live Video Wallpapers:** Smart `mpvpaper` daemon that automatically pauses playback when windows cover the screen (zero wasted GPU/battery).
 * **Terminal Experience:** [Kitty](https://sw.kovidgoyal.net/kitty/) with custom cursor shaders, Zsh, Oh-My-Zsh, and pre-configured Powerlevel10k.
 * **30-Second Installer:** 100% offline instant system cloner with network-assisted GeoIP timezone auto-detection.
