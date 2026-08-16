@@ -101,20 +101,13 @@ Luminal Linux is an independent, out-of-the-box Arch Linux rolling release desig
 
 ## Architecture & Distro Features
 
-```text
-Luminal Linux OS Stack
-+-------------------------------------------------------------+
-|  Desktop Environment: Hyprland (Lua) + Caelestia QML Shell   |
-+-------------------------------------------------------------+
-|  Session Management:  UWSM (Systemd-integrated Wayland)     |
-+-------------------------------------------------------------+
-|  Display Manager:     SDDM + Labwc Wayland Greeter          |
-+-------------------------------------------------------------+
-|  Kernel & Boot:       Triple UKI Presets + Plymouth BGRT    |
-+-------------------------------------------------------------+
-|  Core Base:           Arch Linux Rolling (Linux 6.x+)       |
-+-------------------------------------------------------------+
-```
+| Layer | Component | Description & Technologies |
+| :--- | :--- | :--- |
+| **Desktop Environment** | **Hyprland + Caelestia Shell** | Wayland compositor scripted via Lua, Quickshell QML widgets, Material You dynamic theming |
+| **Session Management** | **UWSM** | Universal Wayland Session Manager with complete systemd user service integration |
+| **Display Manager** | **SDDM** | Qt6/QML login greeter launched via Labwc Wayland backend |
+| **Kernel & Bootloader** | **systemd-boot + UKI** | Unified Kernel Images (UKI) with Plymouth BGRT smooth boot splash |
+| **Base System** | **Arch Linux Rolling** | Minimal, bloat-free rolling release base with pacman & yay AUR access |
 
 ### 1. Dynamic Material You Theming
 * Setting a wallpaper (via right-click in Thunar or `set_wallpaper.sh`) automatically triggers `caelestia-cli` to extract dominant and complementary color palettes.
