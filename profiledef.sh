@@ -11,7 +11,7 @@ buildmodes=('iso')
 bootmodes=('bios.syslinux' 'uefi.systemd-boot')
 pacman_conf="pacman.conf"
 airootfs_image_type="squashfs"
-airootfs_image_tool_options=('-comp' 'zstd' '-Xcompression-level' '15')
+airootfs_image_tool_options=('-comp' 'xz' '-Xdict-size' '1M' '-b' '1M')
 bootstrap_tarball_compression=('zstd' '-c' '-T0' '--auto-threads=logical' '--long' '-19')
 
 file_permissions=(
