@@ -54,11 +54,13 @@ jobs:
 
               echo '==> 4. Building Distro ISO...'
               bash ./build-iso.sh
+              chmod -R 777 /workspace/out /workspace/repo 2>/dev/null || true
             "
 
       - name: 🔍 Inspect & Calculate Checksums
         id: meta
         run: |
+          sudo chown -R $USER:$USER out/
           ISO_FILE=$(ls out/*.iso | head -n 1)
           ISO_NAME=$(basename "${ISO_FILE}")
           SHA256=$(sha256sum "${ISO_FILE}" | awk '{print $1}')
@@ -70,6 +72,14 @@ jobs:
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
 
           echo "SHA256: ${SHA256}" > "${ISO_FILE}.sha256"
+
+      - name: 🔄 Commit Upstream Caelestia & Dependency Updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(upstream): sync Caelestia dotfiles and shell dependencies [skip ci]"
+          branch: master
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
 
       - name: 🚀 Publish GitHub Release
         uses: softprops/action-gh-release@v2
