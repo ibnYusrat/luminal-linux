@@ -122,3 +122,12 @@ export PATH="$HOME/.local/bin:$PATH"
 eval "$(lua $HOME/.z-lua/z.lua --init zsh enhanced)"
 
 alias open="thunar"
+alias macmode="~/.config/hypr/toggle_mac_keys.sh"
+
+# Ensure word-kill and line-kill work across all terminals (Mac style)
+bindkey '^H' backward-kill-word
+bindkey '^W' backward-kill-word
+bindkey '^U' backward-kill-line
+bindkey '^[[1;2H' backward-kill-line
+bindkey '^[[3;5~' kill-word
+
