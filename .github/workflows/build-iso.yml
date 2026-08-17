@@ -18,6 +18,10 @@ on:
         type: boolean
         default: true
 
+concurrency:
+  group: build-iso-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build Custom Arch ISO
@@ -73,14 +77,6 @@ jobs:
 
           echo "SHA256: ${SHA256}" > "${ISO_FILE}.sha256"
 
-      - name: Commit Upstream Caelestia & Dependency Updates
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(upstream): sync Caelestia dotfiles and shell dependencies [skip ci]"
-          branch: master
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "github-actions[bot]@users.noreply.github.com"
-
       - name: Upload Single Latest ISO to Cloudflare R2
         if: ${{ github.event_name == 'schedule' || github.event.inputs.publish_release == 'true' }}
         uses: cloudflare/wrangler-action@v3
@@ -118,3 +114,11 @@ jobs:
             # 2. Flash to USB drive (replace /dev/sdX with target drive)
             sudo dd bs=4M if=luminal-linux-latest-x86_64.iso of=/dev/sdX status=progress oflag=sync
             ```
+
+      - name: Commit Upstream Caelestia & Dependency Updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(upstream): sync Caelestia dotfiles and shell dependencies [skip ci]"
+          branch: master
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
