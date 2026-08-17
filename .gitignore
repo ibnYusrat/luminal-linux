@@ -17,6 +17,7 @@ work/
 
 # Editor / System files
 .cache/
+.wrangler/
 *~
 .DS_Store
 DISTRO_SPEC.md

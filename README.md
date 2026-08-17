@@ -49,6 +49,7 @@ Luminal Linux is an independent, out-of-the-box Arch Linux rolling release desig
 | <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>V</kbd> | **Volume Mixer** | Pavucontrol audio interface |
 | <kbd>SUPER</kbd> + <kbd>V</kbd> | **Clipboard History** | Cliphist clipboard picker |
 | <kbd>SUPER</kbd> + <kbd>.</kbd> | **Emoji Picker** | Searchable system emoji picker |
+| <kbd>SUPER</kbd> + <kbd>F12</kbd> | **Toggle Mac Shortcuts** | Instant live switch between macOS shortcuts (`keyd`) and standard Linux/Windows layout |
 | <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> | **Power / Session** | Sleep, Restart, Shutdown, or Logout dialog |
 | <kbd>SUPER</kbd> + <kbd>L</kbd> | **Lock Screen** | Instant Wayland screen lock |
 | <kbd>SUPER</kbd> + <kbd>SHIFT</kbd> + <kbd>L</kbd> | **Sleep / Suspend** | Suspends system to RAM |
@@ -77,13 +78,33 @@ Luminal Linux is an independent, out-of-the-box Arch Linux rolling release desig
 
 | Keybinding | Action | Output / Behavior |
 | :--- | :--- | :--- |
-| <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>4</kbd> | **Region Screenshot** | Interactive selection; copies to clipboard & saves to `~/Pictures/Screenshots` |
+| <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>4</kbd> *(or <kbd>CTRL</kbd>+<kbd>SUPER</kbd>+<kbd>SHIFT</kbd>+<kbd>4</kbd>)* | **Region to Clipboard** | Interactive selection; copies area directly to clipboard |
+| <kbd>ALT</kbd> + <kbd>SHIFT</kbd> + <kbd>4</kbd> *(or <kbd>SUPER</kbd>+<kbd>SHIFT</kbd>+<kbd>ALT</kbd>+<kbd>S</kbd>)* | **Region to File** | Interactive selection; saves screenshot to `~/Pictures/Screenshots` |
 | <kbd>Print</kbd> | **Full Screenshot** | Captures all connected displays instantly |
 | <kbd>SUPER</kbd> + <kbd>SHIFT</kbd> + <kbd>S</kbd> | **Freeze Capture** | Freezes screen before area selection (Wayfreeze) |
 | <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>R</kbd> | **Screen Recorder** | GPU-accelerated video recording (GPU Screen Recorder) |
 | <kbd>SUPER</kbd> + <kbd>SHIFT</kbd> + <kbd>C</kbd> | **Color Picker** | Hyprpicker magnifying loupe; copies HEX to clipboard |
 
 ---
+
+### macOS Shortcuts Layer (`keyd`)
+
+The system includes pre-configured, low-latency kernel-level shortcut translation via `keyd`:
+
+* **`ALT` acts as `CMD` (Navigation & App Control)**:
+  * <kbd>ALT</kbd> + <kbd>Backspace</kbd>: Delete whole line to the left
+  * <kbd>ALT</kbd> + <kbd>Left</kbd> / <kbd>Right</kbd>: Jump to start / end of line
+  * <kbd>ALT</kbd> + <kbd>Up</kbd> / <kbd>Down</kbd>: Jump to top / bottom of document or page
+  * <kbd>ALT</kbd> + <kbd>C</kbd> / <kbd>V</kbd> / <kbd>X</kbd> / <kbd>Z</kbd> / <kbd>A</kbd>: Copy, Paste, Cut, Undo, Select All
+  * <kbd>ALT</kbd> + <kbd>T</kbd> / <kbd>W</kbd> / <kbd>L</kbd> / <kbd>R</kbd>: New Tab, Close Tab, Address Bar, Refresh (Chrome/Firefox)
+  * <kbd>ALT</kbd> + <kbd>1</kbd> .. <kbd>9</kbd>: Switch tabs 1–9
+* **`SUPER` acts as `OPTION` (Word Navigation & Word Deletion)**:
+  * <kbd>SUPER</kbd> + <kbd>Backspace</kbd>: Delete word to the left (works in browsers, editors, and terminal)
+  * <kbd>SUPER</kbd> + <kbd>Delete</kbd>: Delete word to the right
+  * <kbd>SUPER</kbd> + <kbd>Left</kbd> / <kbd>Right</kbd>: Jump word by word
+  * <kbd>SUPER</kbd> + <kbd>SHIFT</kbd> + <kbd>Left</kbd> / <kbd>Right</kbd>: Select word by word
+* **Instant Toggle**:
+  * Press <kbd>SUPER</kbd> + <kbd>F12</kbd> or run `macmode` in terminal to instantly toggle between Mac mode and standard Linux/Windows layout.
 
 ### Workspaces & Special Scratchpads
 

@@ -113,6 +113,7 @@ wl-clipboard
 cliphist
 libnotify
 dunst
+keyd
 
 # --- Web Browser & Internet ---
 firefox

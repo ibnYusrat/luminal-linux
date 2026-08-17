@@ -81,6 +81,16 @@ jobs:
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
 
+      - name: Upload Single Latest ISO to Cloudflare R2
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.publish_release == 'true' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            wrangler r2 object put luminal-iso/luminal-linux-latest-x86_64.iso --file="${{ steps.meta.outputs.iso_path }}" --remote
+            wrangler r2 object put luminal-iso/luminal-linux-latest-x86_64.iso.sha256 --file="${{ steps.meta.outputs.iso_path }}.sha256" --remote
+
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         if: ${{ github.event_name == 'schedule' || github.event.inputs.publish_release == 'true' }}
@@ -90,18 +100,21 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            ${{ steps.meta.outputs.iso_path }}
             ${{ steps.meta.outputs.iso_path }}.sha256
           body: |
-            ## Luminal Linux Rolling Release (${{ steps.meta.outputs.tag }})
+            ## Luminal Linux - Official Rolling Release (${{ steps.meta.outputs.tag }})
 
-            Automated rolling release containing the latest upstream Arch Linux packages, Linux kernel, Hyprland, and Caelestia desktop environment.
+            Modern Arch Linux distribution featuring Hyprland, Caelestia Shell, Material You dynamic theming, and an offline desktop installer.
 
-            ### Download & Integrity
-            * **ISO Image:** `${{ steps.meta.outputs.iso_name }}`
+            ### Download Single ISO Image
+            * **Direct CDN Download (Cloudflare R2):** [luminal-linux-latest-x86_64.iso](https://pub-cbcfa9ec784041be86b3c0bff0b89ad2.r2.dev/luminal-linux-latest-x86_64.iso)
             * **SHA256 Checksum:** `${{ steps.meta.outputs.sha256 }}`
 
             ### Flashing to USB
             ```bash
-            sudo dd bs=4M if=${{ steps.meta.outputs.iso_name }} of=/dev/sdX status=progress oflag=sync
+            # 1. Download the single ISO image
+            curl -LO https://pub-cbcfa9ec784041be86b3c0bff0b89ad2.r2.dev/luminal-linux-latest-x86_64.iso
+
+            # 2. Flash to USB drive (replace /dev/sdX with target drive)
+            sudo dd bs=4M if=luminal-linux-latest-x86_64.iso of=/dev/sdX status=progress oflag=sync
             ```
