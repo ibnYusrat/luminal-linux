@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Luminal Linux Banner](https://raw.githubusercontent.com/ibnyusrat/luminal-linux/main/airootfs/usr/share/backgrounds/distro/wallpaper.png)
+![Luminal Linux Banner](site/assets/hero-desktop.png)
 
 ### Luminosity. Fluidity. Performance.
 *A modern, crafted Arch Linux distribution engineered for bleeding-edge Wayland desktop ergonomics.*
