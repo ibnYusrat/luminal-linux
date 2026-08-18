@@ -62,7 +62,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Live Checksum Verification from R2
+  // 4. Interactive Mac vs Linux Switcher Mode Demo
+  const modeBtns = document.querySelectorAll('.switch-mode-btn');
+  const keymapRows = {
+    copy: document.getElementById('keymap-copy'),
+    paste: document.getElementById('keymap-paste'),
+    spotlight: document.getElementById('keymap-spotlight'),
+    quit: document.getElementById('keymap-quit'),
+    wordjump: document.getElementById('keymap-wordjump'),
+    wordkill: document.getElementById('keymap-wordkill')
+  };
+
+  const keymaps = {
+    mac: {
+      copy: '<kbd>Cmd</kbd> + <kbd>C</kbd>',
+      paste: '<kbd>Cmd</kbd> + <kbd>V</kbd>',
+      spotlight: '<kbd>Cmd</kbd> + <kbd>Space</kbd>',
+      quit: '<kbd>Cmd</kbd> + <kbd>Q</kbd>',
+      wordjump: '<kbd>Option</kbd> + <kbd>←</kbd> / <kbd>→</kbd>',
+      wordkill: '<kbd>Cmd</kbd> + <kbd>Backspace</kbd>'
+    },
+    linux: {
+      copy: '<kbd>Ctrl</kbd> + <kbd>C</kbd>',
+      paste: '<kbd>Ctrl</kbd> + <kbd>V</kbd>',
+      spotlight: '<kbd>Super</kbd> + <kbd>Space</kbd>',
+      quit: '<kbd>Super</kbd> + <kbd>Q</kbd>',
+      wordjump: '<kbd>Ctrl</kbd> + <kbd>←</kbd> / <kbd>→</kbd>',
+      wordkill: '<kbd>Ctrl</kbd> + <kbd>Backspace</kbd>'
+    }
+  };
+
+  modeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      modeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (keymaps[mode]) {
+        for (const [key, element] of Object.entries(keymapRows)) {
+          if (element) {
+            element.innerHTML = keymaps[mode][key];
+          }
+        }
+      }
+    });
+  });
+
+  // 5. Live Checksum Verification from R2
   const checksumElement = document.getElementById('live-checksum');
   if (checksumElement) {
     fetch('https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso.sha256')
