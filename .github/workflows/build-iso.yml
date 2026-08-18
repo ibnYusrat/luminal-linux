@@ -80,11 +80,14 @@ jobs:
       - name: Upload Single Latest ISO to Cloudflare R2
         if: ${{ github.event_name == 'schedule' || github.event.inputs.publish_release == 'true' }}
         run: |
-          npx --yes wrangler@latest r2 object put luminal-iso/luminal-linux-latest-x86_64.iso --file="${{ steps.meta.outputs.iso_path }}" --remote
-          npx --yes wrangler@latest r2 object put luminal-iso/luminal-linux-latest-x86_64.iso.sha256 --file="${{ steps.meta.outputs.iso_path }}.sha256" --remote
+          aws s3 cp "${{ steps.meta.outputs.iso_path }}" "s3://luminal-iso/luminal-linux-latest-x86_64.iso" \
+            --endpoint-url "https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+          aws s3 cp "${{ steps.meta.outputs.iso_path }}.sha256" "s3://luminal-iso/luminal-linux-latest-x86_64.iso.sha256" \
+            --endpoint-url "https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com"
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
