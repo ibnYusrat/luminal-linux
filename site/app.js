@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     spotlight: document.getElementById('keymap-spotlight'),
     quit: document.getElementById('keymap-quit'),
     wordjump: document.getElementById('keymap-wordjump'),
-    wordkill: document.getElementById('keymap-wordkill')
+    wordkill: document.getElementById('keymap-wordkill'),
+    linekill: document.getElementById('keymap-linekill')
   };
 
   const keymaps = {
@@ -80,15 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
       spotlight: '<kbd>Cmd</kbd> + <kbd>Space</kbd>',
       quit: '<kbd>Cmd</kbd> + <kbd>Q</kbd>',
       wordjump: '<kbd>Option</kbd> + <kbd>←</kbd> / <kbd>→</kbd>',
-      wordkill: '<kbd>Cmd</kbd> + <kbd>Backspace</kbd>'
+      wordkill: '<kbd>Option</kbd> + <kbd>Backspace</kbd>',
+      linekill: '<kbd>Cmd</kbd> + <kbd>Backspace</kbd>'
     },
     linux: {
       copy: '<kbd>Ctrl</kbd> + <kbd>C</kbd>',
       paste: '<kbd>Ctrl</kbd> + <kbd>V</kbd>',
-      spotlight: '<kbd>Super</kbd> + <kbd>Space</kbd>',
+      spotlight: '<kbd>Alt</kbd> + <kbd>Space</kbd>',
       quit: '<kbd>Super</kbd> + <kbd>Q</kbd>',
       wordjump: '<kbd>Ctrl</kbd> + <kbd>←</kbd> / <kbd>→</kbd>',
-      wordkill: '<kbd>Ctrl</kbd> + <kbd>Backspace</kbd>'
+      wordkill: '<kbd>Ctrl</kbd> + <kbd>Backspace</kbd>',
+      linekill: '<kbd>Ctrl</kbd> + <kbd>U</kbd>'
     }
   };
 
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (keymaps[mode]) {
         for (const [key, element] of Object.entries(keymapRows)) {
-          if (element) {
+          if (element && keymaps[mode][key]) {
             element.innerHTML = keymaps[mode][key];
           }
         }

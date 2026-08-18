@@ -68,7 +68,7 @@
       <div class="hero-cta">
         <a href="https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso" class="btn btn-primary btn-lg" id="download-cta">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>Download ISO (2.34 GB)</span>
+          <span>Download ISO (2.9 GB)</span>
         </a>
         <a href="#install" class="btn btn-secondary btn-lg">
           <span>Quick Install Guide</span>
@@ -145,7 +145,7 @@
               </div>
               <div class="spotlight-feature-text">
                 <h4>Real-Time Material You Color Generation</h4>
-                <p>Matugen extracts complementary primary, surface, and container palettes from your wallpaper and updates GTK, Qt6, Kitty, Caelestia Shell, and rofi live.</p>
+                <p>Caelestia CLI dynamically extracts complementary primary, surface, and container palettes from your wallpaper and updates GTK, Qt6, Kitty, and Caelestia Shell live.</p>
               </div>
             </div>
           </div>
@@ -197,8 +197,18 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
               </div>
               <div class="spotlight-feature-text">
-                <h4>Instant 1-Second Toggle (<kbd>Super + D</kbd>)</h4>
-                <p>Press <kbd>Super + D</kbd> (or type <code>macmode</code> in terminal) to flip the hardware key daemon on the fly. No reboots or re-logins required.</p>
+                <h4>Instant 1-Second Toggle (<kbd>Super + F12</kbd>)</h4>
+                <p>Press <kbd>Super + F12</kbd> (or type <code>macmode</code> in terminal) to flip the hardware key daemon on the fly. No reboots or re-logins required.</p>
+              </div>
+            </div>
+
+            <div class="spotlight-feature-item">
+              <div class="feature-icon-sm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div class="spotlight-feature-text">
+                <h4>Why Alt is Cmd (True Muscle Memory)</h4>
+                <p>On standard PC keyboards, the key physically adjacent to the Spacebar is <kbd>Alt</kbd>. Because macOS muscle memory relies on resting your thumb right beside the Spacebar for <kbd>Cmd</kbd>, <code>keyd</code> maps physical <kbd>Alt</kbd> &rarr; <kbd>Cmd</kbd> and physical <kbd>Super</kbd> (Windows key) &rarr; <kbd>Option</kbd>. No thumb contortions needed.</p>
               </div>
             </div>
 
@@ -208,7 +218,7 @@
               </div>
               <div class="spotlight-feature-text">
                 <h4>Full System-Wide Consistency</h4>
-                <p>Maps clipboard (<kbd>Cmd+C/V</kbd>), Spotlight (<kbd>Cmd+Space</kbd>), app quit (<kbd>Cmd+Q</kbd>), and word navigation across browsers, editors, and terminals.</p>
+                <p>Maps clipboard (<kbd>Cmd+C/V</kbd>), Spotlight launcher (<kbd>Cmd+Space</kbd>), app quit (<kbd>Cmd+Q</kbd>), and word/line navigation across browsers, editors, and terminals.</p>
               </div>
             </div>
           </div>
@@ -226,7 +236,7 @@
 
           <div class="mode-trigger-hint">
             <span>Toggle Anytime On Live System:</span>
-            <div class="kbd-group"><kbd>Super</kbd> + <kbd>D</kbd></div>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>F12</kbd></div>
           </div>
 
           <div class="switch-table">
@@ -257,7 +267,12 @@
 
             <div class="switch-row">
               <span class="switch-action-label">Delete Full Word Backwards</span>
-              <span class="switch-keys-badge" id="keymap-wordkill"><kbd>Cmd</kbd> + <kbd>Backspace</kbd></span>
+              <span class="switch-keys-badge" id="keymap-wordkill"><kbd>Option</kbd> + <kbd>Backspace</kbd></span>
+            </div>
+
+            <div class="switch-row">
+              <span class="switch-action-label">Delete Full Line Backwards</span>
+              <span class="switch-keys-badge" id="keymap-linekill"><kbd>Cmd</kbd> + <kbd>Backspace</kbd></span>
             </div>
           </div>
         </div>
@@ -289,7 +304,7 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
           </div>
           <h3>Material You Dynamic Theming</h3>
-          <p>Wallpaper changes trigger matugen to extract complementary color palettes across GTK, Qt6, Kitty terminal, Caelestia Shell, and rofi.</p>
+          <p>Wallpaper changes trigger Caelestia's Material You engine to extract complementary color palettes across GTK, Qt6, Kitty terminal, and Caelestia Shell.</p>
         </div>
 
         <div class="feature-card">
@@ -350,7 +365,7 @@
             <ul class="tab-list">
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Spotlight application search launched via <kbd>Super + Space</kbd></span>
+                <span>Spotlight application search launched via <kbd>Alt + Space</kbd> (or <kbd>Super</kbd>)</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -358,7 +373,7 @@
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Native Mac / Linux keyboard modifier switcher (<kbd>Super + D</kbd>)</span>
+                <span>Native Mac / Linux keyboard modifier switcher (<kbd>Super + F12</kbd>)</span>
               </li>
             </ul>
           </div>
@@ -402,11 +417,11 @@
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Matugen real-time palette generation</span>
+                <span>Caelestia real-time Material You palette generation</span>
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Unified GTK, Qt6, Kitty, and Waybar color themes</span>
+                <span>Unified GTK, Qt6, Kitty, and Caelestia Shell color themes</span>
               </li>
             </ul>
           </div>
@@ -433,12 +448,12 @@
         <div class="keybind-grid" id="keybind-list">
           <div class="keybind-card">
             <span class="keybind-action">Spotlight Application Search</span>
-            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Space</kbd></div>
+            <div class="kbd-group"><kbd>Alt</kbd> + <kbd>Space</kbd></div>
           </div>
 
           <div class="keybind-card">
             <span class="keybind-action">Open Kitty Terminal</span>
-            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Return</kbd></div>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>T</kbd> / <kbd>Return</kbd></div>
           </div>
 
           <div class="keybind-card">
@@ -447,13 +462,38 @@
           </div>
 
           <div class="keybind-card">
-            <span class="keybind-action">Toggle Mac / Linux Keyboard Mode</span>
-            <div class="kbd-group"><kbd>Super</kbd> + <kbd>D</kbd></div>
+            <span class="keybind-action">Open Web Browser (Firefox)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>W</kbd></div>
           </div>
 
           <div class="keybind-card">
-            <span class="keybind-action">Interactive Area Screenshot</span>
+            <span class="keybind-action">Open Code Editor (VSCodium)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>C</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Toggle Mac / Linux Keyboard Mode</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>F12</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Clipboard History (Cliphist)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>V</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Interactive Region Screenshot (Clipboard + Save)</span>
+            <div class="kbd-group"><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>4</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Freeze Screen Capture</span>
             <div class="kbd-group"><kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Full Screen Screenshot</span>
+            <div class="kbd-group"><kbd>Print</kbd></div>
           </div>
 
           <div class="keybind-card">
@@ -468,12 +508,17 @@
 
           <div class="keybind-card">
             <span class="keybind-action">Toggle Floating Window</span>
-            <div class="kbd-group"><kbd>Super</kbd> + <kbd>V</kbd></div>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>Space</kbd></div>
           </div>
 
           <div class="keybind-card">
             <span class="keybind-action">Lock Screen (Hyprlock)</span>
             <div class="kbd-group"><kbd>Super</kbd> + <kbd>L</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Power / Session Menu</span>
+            <div class="kbd-group"><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Del</kbd></div>
           </div>
 
           <div class="keybind-card">
@@ -483,7 +528,12 @@
 
           <div class="keybind-card">
             <span class="keybind-action">Move Window to Workspace</span>
-            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>1..9</kbd></div>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Alt</kbd> + <kbd>1..9</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Color Picker (Hyprpicker)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></div>
           </div>
 
           <div class="keybind-card">
@@ -508,7 +558,7 @@
         <div class="step-num">1</div>
         <div class="step-content">
           <h3>Download the Single Rolling ISO</h3>
-          <p>Download the official 2.34 GB ISO image accelerated globally via Cloudflare's Edge CDN.</p>
+          <p>Download the official 2.9 GB ISO image accelerated globally via Cloudflare's Edge CDN.</p>
           <div class="quick-install-box" style="margin: 0; max-width: 100%;">
             <span class="code-snippet">curl -LO https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso</span>
             <button class="copy-btn" data-copy="curl -LO https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso" aria-label="Copy download command">
@@ -555,7 +605,7 @@
             A modern, refined Arch Linux distribution with Hyprland and Caelestia Shell. Built for speed and aesthetics.
           </p>
           <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
-            SHA256: <span id="live-checksum">ae16cff94fa6cd83e2f6899ff3ba3ffb9b6e208afbf8930c3474a6b0ef188fe8</span>
+            SHA256: <span id="live-checksum">75b975930dc615348d31025cf0c50b0320aee20586ad860633c99774a1539757</span>
           </p>
         </div>
 
