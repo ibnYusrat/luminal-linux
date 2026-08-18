@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luminal Linux — Modern Arch Linux, Refined</title>
+  <meta name="description" content="A beautifully curated Arch Linux distribution featuring Hyprland, Caelestia Shell, Material You dynamic theming, and an instant 30-second offline installer.">
+  <meta name="keywords" content="Luminal Linux, Arch Linux, Hyprland, Caelestia Shell, Material You, Linux Distro, Wayland">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Luminal Linux — Modern Arch Linux, Refined">
+  <meta property="og:description" content="A curated Arch Linux distribution featuring Hyprland, Caelestia Shell, Material You dynamic theming, and an instant 30-second UKI installer.">
+  <meta property="og:image" content="https://luminal-linux.org/assets/hero-desktop.png">
+  <meta property="og:url" content="https://luminal-linux.org">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2338bdf8'/><path d='M30 70 L50 25 L70 70 Z' fill='%2307090e'/></svg>">
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">L</div>
+        <span>Luminal Linux</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#architecture" class="nav-link">Architecture</a></li>
+        <li><a href="#shortcuts" class="nav-link">Shortcuts</a></li>
+        <li><a href="#install" class="nav-link">Install</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/ibnYusrat/luminal-linux" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          <span>GitHub</span>
+        </a>
+        <a href="https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Download ISO</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>Rolling Release v2026.08.18 • Cloudflare Edge CDN</span>
+      </div>
+
+      <h1 class="hero-title">
+        Modern Arch Linux, <span>Refined</span>.
+      </h1>
+
+      <p class="hero-subtitle">
+        A crafted Hyprland experience with Caelestia Shell, dynamic Material You theming, full hardware acceleration, and an instant 30-second UKI offline installer.
+      </p>
+
+      <div class="hero-cta">
+        <a href="https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso" class="btn btn-primary btn-lg" id="download-cta">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Download ISO (2.34 GB)</span>
+        </a>
+        <a href="#install" class="btn btn-secondary btn-lg">
+          <span>Quick Install Guide</span>
+        </a>
+      </div>
+
+      <div class="quick-install-box">
+        <span class="code-snippet">curl -LO https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso</span>
+        <button class="copy-btn" data-copy="curl -LO https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso" aria-label="Copy download command" title="Copy command">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        </button>
+      </div>
+
+      <div class="hero-preview">
+        <div class="preview-bar">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+        </div>
+        <img src="assets/hero-desktop.png" alt="Luminal Linux Desktop Experience" class="preview-img" loading="eager">
+      </div>
+    </div>
+  </header>
+
+  <!-- Core Pillars Grid -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Core Features</div>
+        <h2 class="section-title">Built for speed, aesthetics, and control.</h2>
+        <p class="section-desc">Every element of Luminal Linux is engineered to give you a cohesive desktop with zero configuration fatigue.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <h3>30-Second UKI Offline Installer</h3>
+          <p>Instant desktop rootfs cloning with systemd-boot Unified Kernel Images. Install the full system with zero internet requirement in under 30 seconds.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+          </div>
+          <h3>Material You Dynamic Theming</h3>
+          <p>Wallpaper changes trigger matugen to extract complementary color palettes across GTK, Qt6, Kitty terminal, Caelestia Shell, and rofi.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <h3>Native Wayland & Hardware Acceleration</h3>
+          <p>Full VA-API / VDPAU video decode, PipeWire low-latency audio, Intel Iris Xe, AMD Radeon, and hybrid Nvidia Prime switching pre-configured.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          </div>
+          <h3>Developer-Grade Terminal Suite</h3>
+          <p>Kitty terminal with native clipboard integration, Oh-My-Zsh with Powerlevel10k prompt, z-lua fast directory jumping, and Neovim.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+          </div>
+          <h3>Caelestia Shell Architecture</h3>
+          <p>Lightweight QML/QuickShell widgets providing modern control centers, audio visualizers, workspace indicators, and dynamic notch notifications.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <h3>Continuous Upstream Synchronization</h3>
+          <p>Automated CI/CD pipelines track Arch Linux core updates and Caelestia releases weekly, baking verified rolling ISOs every Sunday.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Deep Dive Section -->
+  <section id="architecture">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Deep Dive</div>
+        <h2 class="section-title">Engineered from kernel to compositor.</h2>
+        <p class="section-desc">Explore the subsystems powering the Luminal Linux desktop environment.</p>
+      </div>
+
+      <div class="tabs-container">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="tab-desktop">Desktop & Shell</button>
+          <button class="tab-btn" data-tab="tab-installer">Instant Installer</button>
+          <button class="tab-btn" data-tab="tab-theming">Dynamic Theming</button>
+        </div>
+
+        <div class="tab-pane active" id="tab-desktop">
+          <div class="tab-info">
+            <h3>Caelestia Shell on Hyprland</h3>
+            <p>A tailored Wayland compositor environment configured for smooth animations, gesture navigation, and multi-monitor productivity.</p>
+            <ul class="tab-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Spotlight application search launched via <kbd>Super + Space</kbd></span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Dynamic notification notch and audio visualizers</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Native Mac / Linux keyboard modifier switcher (<kbd>Super + D</kbd>)</span>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-visual">
+            <img src="assets/hyprland-shell.png" alt="Caelestia Shell UI" loading="lazy">
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-installer">
+          <div class="tab-info">
+            <h3>Sub-Minute UKI Offline Installation</h3>
+            <p>Our dedicated rootfs installer formats your NVMe or SSD, rsync-clones the desktop filesystem, configures systemd-boot with Unified Kernel Images, and completes in ~30 seconds.</p>
+            <ul class="tab-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Zero internet required during setup</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Automatic timezone detection and fzf disk selector</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Systemd-boot UKI with direct UEFI stub booting</span>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-visual">
+            <img src="assets/hero-desktop.png" alt="Installer Interface" loading="lazy">
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-theming">
+          <div class="tab-info">
+            <h3>Harmonious Material You Palette Extraction</h3>
+            <p>Set any static wallpaper or live video wallpaper from Thunar. The system extracts harmonious primary, surface, and container colors, applying them live across the entire OS.</p>
+            <ul class="tab-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Right-click any image or video in Thunar to set wallpaper</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Matugen real-time palette generation</span>
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Unified GTK, Qt6, Kitty, and Waybar color themes</span>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-visual">
+            <img src="assets/theming-preview.png" alt="Dynamic Theming Engine" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shortcuts Cheatsheet Explorer -->
+  <section id="shortcuts">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Cheatsheet</div>
+        <h2 class="section-title">Intuitive keyboard navigation.</h2>
+        <p class="section-desc">Search shortcuts or browse essential keybindings for maximum speed.</p>
+      </div>
+
+      <div class="cheatsheet-box">
+        <input type="text" id="keybind-search" class="search-bar" placeholder="Type to filter keybindings (e.g. terminal, launcher, mac, screenshot)..." aria-label="Filter keybindings">
+
+        <div class="keybind-grid" id="keybind-list">
+          <div class="keybind-card">
+            <span class="keybind-action">Spotlight Application Search</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Space</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Open Kitty Terminal</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Return</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Open File Manager (Thunar)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>E</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Toggle Mac / Linux Keyboard Mode</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>D</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Interactive Area Screenshot</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Close Focused Window</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Q</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Toggle Fullscreen Mode</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>F</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Toggle Floating Window</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>V</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Lock Screen (Hyprlock)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>L</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Switch Workspaces (1 to 9)</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>1..9</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Move Window to Workspace</span>
+            <div class="kbd-group"><kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>1..9</kbd></div>
+          </div>
+
+          <div class="keybind-card">
+            <span class="keybind-action">Volume Up / Down / Mute</span>
+            <div class="kbd-group"><kbd>Audio Keys</kbd></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Installation Guide -->
+  <section id="install">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Get Started</div>
+        <h2 class="section-title">Install Luminal Linux in 3 steps.</h2>
+        <p class="section-desc">Deploy to physical hardware or test safely in a virtual machine.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Download the Single Rolling ISO</h3>
+          <p>Download the official 2.34 GB ISO image accelerated globally via Cloudflare's Edge CDN.</p>
+          <div class="quick-install-box" style="margin: 0; max-width: 100%;">
+            <span class="code-snippet">curl -LO https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso</span>
+            <button class="copy-btn" data-copy="curl -LO https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso" aria-label="Copy download command">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Flash to USB Drive</h3>
+          <p>Write the ISO to a USB thumb drive using <code>dd</code> or any flashing utility (BalenaEtcher, Rufus in DD mode):</p>
+          <div class="quick-install-box" style="margin: 0; max-width: 100%;">
+            <span class="code-snippet">sudo dd bs=4M if=luminal-linux-latest-x86_64.iso of=/dev/sdX status=progress oflag=sync</span>
+            <button class="copy-btn" data-copy="sudo dd bs=4M if=luminal-linux-latest-x86_64.iso of=/dev/sdX status=progress oflag=sync" aria-label="Copy flash command">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Boot & Run 30-Second Installer</h3>
+          <p>Boot into UEFI live mode and select <strong>[1] Install Custom Arch Linux to Disk</strong> in the Welcome app.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="margin-bottom: 12px;">
+            <div class="brand-icon">L</div>
+            <span>Luminal Linux</span>
+          </div>
+          <p style="color: var(--text-secondary); max-width: 380px; margin-bottom: 16px;">
+            A modern, refined Arch Linux distribution with Hyprland and Caelestia Shell. Built for speed and aesthetics.
+          </p>
+          <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
+            SHA256: <span id="live-checksum">ae16cff94fa6cd83e2f6899ff3ba3ffb9b6e208afbf8930c3474a6b0ef188fe8</span>
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Project Links</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/ibnYusrat/luminal-linux" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="https://github.com/ibnYusrat/luminal-linux/releases" target="_blank" rel="noopener">Release Notes</a></li>
+            <li><a href="https://github.com/ibnYusrat/luminal-linux/issues" target="_blank" rel="noopener">Issue Tracker</a></li>
+            <li><a href="https://github.com/caelestia-dots/shell" target="_blank" rel="noopener">Caelestia Shell Upstream</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="https://wiki.archlinux.org/" target="_blank" rel="noopener">Arch Linux Wiki</a></li>
+            <li><a href="https://hyprland.org/" target="_blank" rel="noopener">Hyprland Docs</a></li>
+            <li><a href="https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso">Direct ISO CDN</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Luminal Linux Project. Open-source under MIT License.</span>
+        <span>Hosted globally on Cloudflare Pages & R2 Edge CDN</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
