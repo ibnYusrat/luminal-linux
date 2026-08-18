@@ -96,6 +96,11 @@ thunar
 thunar-volman
 tumbler
 ffmpegthumbnailer
+webp-pixbuf-loader
+poppler-glib
+libgsf
+libopenraw
+libgepub
 gvfs
 trash-cli
 mpv
