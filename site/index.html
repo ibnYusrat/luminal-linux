@@ -82,13 +82,35 @@
         </button>
       </div>
 
-      <div class="hero-preview">
+      <div class="hero-preview" id="hero-preview-container">
         <div class="preview-bar">
-          <div class="preview-dot"></div>
-          <div class="preview-dot"></div>
-          <div class="preview-dot"></div>
+          <div class="preview-dots">
+            <div class="preview-dot"></div>
+            <div class="preview-dot"></div>
+            <div class="preview-dot"></div>
+          </div>
+          <div class="preview-title">Luminal Linux 4K Live Showcase</div>
+          <button class="preview-fullscreen-btn" id="hero-fullscreen-btn" title="Toggle Fullscreen">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            <span>Fullscreen</span>
+          </button>
         </div>
-        <img src="assets/hero-desktop.png" alt="Luminal Linux Desktop Experience" class="preview-img" loading="eager">
+
+        <div class="hero-media-wrapper" id="hero-media-wrapper">
+          <img src="assets/hero-desktop.png" alt="Luminal Linux Desktop Experience" class="preview-img" id="hero-poster" loading="eager">
+          
+          <button class="hero-play-overlay" id="hero-play-btn" aria-label="Play Desktop Video Demo">
+            <div class="play-icon-circle">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+            <span class="play-text">Watch Live Desktop Demo</span>
+          </button>
+
+          <video id="hero-video" class="hero-video" preload="none" controls playsinline>
+            <source src="https://iso.luminal-linux.org/luminal-demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
     </div>
   </header>

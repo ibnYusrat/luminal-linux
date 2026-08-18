@@ -108,7 +108,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 5. Live Checksum Verification from R2
+  // 5. Hero Video Player Interaction
+  const heroMediaWrapper = document.getElementById('hero-media-wrapper');
+  const heroPlayBtn = document.getElementById('hero-play-btn');
+  const heroVideo = document.getElementById('hero-video');
+  const heroFullscreenBtn = document.getElementById('hero-fullscreen-btn');
+
+  if (heroPlayBtn && heroVideo && heroMediaWrapper) {
+    heroPlayBtn.addEventListener('click', () => {
+      heroMediaWrapper.classList.add('playing');
+      heroVideo.play().catch(() => {});
+    });
+  }
+
+  if (heroFullscreenBtn && heroVideo) {
+    heroFullscreenBtn.addEventListener('click', () => {
+      if (heroMediaWrapper) heroMediaWrapper.classList.add('playing');
+      heroVideo.play().catch(() => {});
+      if (heroVideo.requestFullscreen) {
+        heroVideo.requestFullscreen();
+      } else if (heroVideo.webkitRequestFullscreen) {
+        heroVideo.webkitRequestFullscreen();
+      }
+    });
+  }
+
+  // 6. Live Checksum Verification from R2
   const checksumElement = document.getElementById('live-checksum');
   if (checksumElement) {
     fetch('https://iso.luminal-linux.org/luminal-linux-latest-x86_64.iso.sha256')
